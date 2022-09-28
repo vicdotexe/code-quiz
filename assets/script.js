@@ -1,5 +1,7 @@
 var questions = [];
+var cardDisplay = document.querySelector("#cardDisplay");
 
+// create and add a question to the questions array
 function addQuestion(ask, correctIndex){
      // create the question object
     var question = {
@@ -19,8 +21,33 @@ function addQuestion(ask, correctIndex){
 
     // return the populated question item
     questions.push(question);
+}
 
+// create an html section that represents a question and its options
+function createQuestionCard(question){
 
+    // create the actual card section
+    var card = document.createElement("section");
+    card.setAttribute("id","questionCard");
+    
+    // create an h1 to display the actual question being asked
+    var h1 = document.createElement("h1");
+    h1.textContent = question.ask;
+    card.appendChild(h1);
+
+    // create a list
+    var ol = document.createElement("ol");
+    card.appendChild(ol);
+
+    // create and add the possible answers to the list
+    for(var i = 0; i < question.answers.length; i++){
+        var li = document.createElement("li");
+        li.textContent = question.answers[i];
+        ol.appendChild(li);
+    }
+    
+    // return the html section element created
+    return card;
 }
 
 
@@ -28,7 +55,6 @@ addQuestion("How old are you?", 2, 10,34,18,19);
 addQuestion("Dogs name?", 3, "Mowgli", "Lila", "Tommy", "Luna");
 addQuestion("Favorite Vegetable", 1, "Potato", "Onion", "Carrot", "Cucumber");
 
-console.log(questions);
 
-var question = questions[0];
-console.log(question.getResult(2));
+var card = createQuestionCard(questions[0], 0);
+cardDisplay.appendChild(card);
