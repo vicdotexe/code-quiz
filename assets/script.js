@@ -1,5 +1,7 @@
 var questions = [];
 var cardDisplay = document.querySelector("#cardDisplay");
+var currentQuestionIndex = 0;
+
 
 // create and add a question to the questions array
 function addQuestion(ask, correctIndex){
@@ -40,9 +42,10 @@ function createQuestionCard(question){
     card.appendChild(ol);
 
     // create and add the possible answers to the list
-    for(var i = 0; i < question.answers.length; i++){
+    for(let i = 0; i < question.answers.length; i++){
         var li = document.createElement("li");
         li.textContent = question.answers[i];
+        li.onclick = function(){answerQuestion(question.getResult(i));};
         ol.appendChild(li);
     }
     
@@ -50,11 +53,49 @@ function createQuestionCard(question){
     return card;
 }
 
+// function called when li(answer) is clicked
+function answerQuestion(result){
+    currentQuestionIndex++; // track our questions count
 
-addQuestion("How old are you?", 2, 10,34,18,19);
+    // if our current index is more than the amount of question
+    // then we have reached the end of the test, otherwise show next question
+    if (currentQuestionIndex >= questions.length){
+        endTest();
+    }else{
+        showNextQuestion();
+    }
+}
+
+// called to display the next question card
+function showNextQuestion(){
+    // create a new card based on the current question index
+    card = createQuestionCard(questions[currentQuestionIndex]);
+
+    // remove the last question card from the cardDisplay if one exists
+    if (cardDisplay.children.length > 0){
+        cardDisplay.children[0].remove();
+    }
+    // add the new card
+    cardDisplay.appendChild(card);
+}
+
+// starts the test
+function startTest(){
+    currentQuestionIndex = 0; // ensure we are on the first question
+    showNextQuestion();
+}
+
+// ends the test
+function endTest(){
+    alert("reached end of test");
+}
+
+// ----------------- //
+
+// populate the questions //
+addQuestion("How old are you?", 1, 10,34,18,19);
 addQuestion("Dogs name?", 3, "Mowgli", "Lila", "Tommy", "Luna");
 addQuestion("Favorite Vegetable", 1, "Potato", "Onion", "Carrot", "Cucumber");
 
-
-var card = createQuestionCard(questions[0], 0);
-cardDisplay.appendChild(card);
+// start the test //
+startTest();
