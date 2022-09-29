@@ -40,6 +40,10 @@ main {
 }
 
 .card{
+    display:flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
     border: 1px solid black;
     border-radius: 20px;
     width: 100%;
@@ -47,26 +51,15 @@ main {
     padding: 10px 20px;
 }
 
-#homeCard{
-    display:flex;
-    justify-content: center;
-    align-items: center;
-}
-#homeCard a{
-    display: block;
-    border: 1px solid black;
-    border-radius: 5px;
-    padding: 10px;
+.card h1{
+    font-size:24px;
 }
 
 .questionCard{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-}
-
-.questionCard h1{
-    font-size: 24px;
+    align-items: flex-start;
 }
 
 #answersSection{
@@ -76,23 +69,28 @@ main {
     align-items: flex-start;
 }
 
-.answerOption{
+.button {
     border: 1px solid black;
     border-radius: 10px;
     margin: 5px 0px;
     padding: 10px;
-    min-width: 50%;
-}
-
-.button {
     transition: 0.2s;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-weight: bold;
     color: var(--buttonTextColor);
     background-color: var(--buttonBgColor);
-
 }
 
 .button:hover{
     background-color: var(--buttonHighlightColor);
+}
+
+#initials{
+    padding: 10px;
+    border: 2px dashed black;
+    border-radius: 10px;
+    text-align: center;
+}
+#initials:focus{
+    outline: none;
 }

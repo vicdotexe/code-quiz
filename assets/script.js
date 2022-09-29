@@ -62,12 +62,48 @@ function createHomeCard(){
     card.setAttribute("class", "card");
     card.setAttribute("id", "homeCard");
 
+    var h1 = document.createElement("h1");
+    h1.textContent = "Coding Quiz Challenge";
+    card.appendChild(h1);
+
+    var p = document.createElement("p");
+    p.textContent="Must complete the quiz within the time-limit to place a score. Your score will be the time remaining."
+    card.appendChild(p);
+
     var a = document.createElement("a");
     a.setAttribute("class", "button")
     a.setAttribute("href", "#");
     a.textContent = "Start Test";
     a.onclick = function(){startTest();};
 
+    card.appendChild(a);
+
+    return card;
+}
+
+function createEndCard(){
+    var card = document.createElement("section");
+    card.setAttribute("class", "card");
+    card.setAttribute("id", "endCard");
+
+    var h1 = document.createElement("h1");
+    h1.textContent = "Quiz Complete!";
+    card.appendChild(h1);
+
+    var p = document.createElement("p");
+    p.textContent = "Enter your initials to save your score.";
+    card.appendChild(p);
+
+    var input = document.createElement("input");
+    input.setAttribute("id", "initials");
+    input.setAttribute("type", "text");
+    card.appendChild(input);
+
+    var a = document.createElement("a");
+    a.setAttribute("href", "#");
+    a.setAttribute("class", "button");
+    a.textContent = "Submit";
+    a.onclick = function(){changeCard(createHomeCard());};
     card.appendChild(a);
 
     return card;
@@ -80,7 +116,7 @@ function answerQuestion(result){
     // if our current index is more than the amount of question
     // then we have reached the end of the test, otherwise show next question
     if (currentQuestionIndex >= questions.length){
-        endTest();
+        changeCard(createEndCard());
     }else{
         showNextQuestion();
     }
