@@ -1,5 +1,7 @@
 var questions = [];
 var cardDisplay = document.querySelector("#cardDisplay");
+var timerh1 = document.querySelector("#timer");
+var viewScoresh1 = document.querySelector("#highscores");
 var currentQuestionIndex = 0;
 
 // create and add a question to the questions array
@@ -109,12 +111,16 @@ function createEndCard(){
         changeCard(createHomeCard());
         var ul = document.getElementById("answerResults");
         ul.innerHTML="";
+        viewScoresh1.setAttribute("style", "visibility:visible");
+        timerh1.setAttribute("style", "visibility:hidden");
     };
     card.appendChild(a);
 
     return card;
 }
 
+
+// this makes the little gray answer-result boxes appear
 function populateAnswerResults(){
     var answerResults = document.getElementById("answerResults");
 
@@ -129,7 +135,7 @@ function populateAnswerResults(){
 function answerQuestion(result){
 
     // change the color of the box in the answer tracker
-    var li = document.getElementById("answerResults").children[currentQuestionIndex];
+    var li = document.querySelector("#answerResults").children[currentQuestionIndex];
     var color = result ? "green" : "red";
     li.setAttribute("style", `background-color:${color}`)
 
@@ -164,15 +170,14 @@ function changeCard(card){
 // starts the test
 function startTest(){
     currentQuestionIndex = 0; // ensure we are on the first question
-    populateAnswerResults();
-    showNextQuestion();
+    populateAnswerResults(); // show the gray answerboxes to track results
+    showNextQuestion(); // kickoff the first question
+
+    // adjust visibilities in the header
+    timerh1.setAttribute("style", "visibility:visible");
+    viewScoresh1.setAttribute("style", "visibility:hidden");
 }
 
-// ends the test
-function endTest(){
-    alert("reached end of test");
-    changeCard(createHomeCard());
-}
 
 // ---------------------------------- //
 
@@ -181,5 +186,13 @@ function endTest(){
 addQuestion("How old are you?", 1, 10,34,18,19);
 addQuestion("Dogs name?", 3, "Mowgli", "Lila", "Tommy", "Luna");
 addQuestion("Favorite Vegetable", 1, "Potato", "Onion", "Carrot", "Cucumber");
+addQuestion("How old are you?", 1, 10,34,18,19);
+addQuestion("Dogs name?", 3, "Mowgli", "Lila", "Tommy", "Luna");
+addQuestion("Favorite Vegetable", 1, "Potato", "Onion", "Carrot", "Cucumber");
+addQuestion("How old are you?", 1, 10,34,18,19);
+addQuestion("Dogs name?", 3, "Mowgli", "Lila", "Tommy", "Luna");
+addQuestion("Favorite Vegetable", 1, "Potato", "Onion", "Carrot", "Cucumber");
 
+// start off with a home-card and make the timer invisible
 changeCard(createHomeCard());
+timerh1.setAttribute("style", "visibility:hidden");
