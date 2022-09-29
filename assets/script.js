@@ -30,7 +30,7 @@ function createQuestionCard(question){
 
     // create the actual card section
     var card = document.createElement("section");
-    card.setAttribute("id","questionCard");
+    card.setAttribute("class","card questionCard");
     
     // create an h1 to display the actual question being asked
     var h1 = document.createElement("h1");
@@ -53,7 +53,21 @@ function createQuestionCard(question){
     return card;
 }
 
-// function called when li(answer) is clicked
+function createHomeCard(){
+    var card = document.createElement("section");
+    card.setAttribute("class", "card");
+    card.setAttribute("id", "homeCard");
+
+    var button = document.createElement("h1");
+    button.textContent = "Start Test";
+    button.onclick = function(){startTest();};
+
+    card.appendChild(button);
+
+    return card;
+}
+
+// function that is called when li(answer) is clicked
 function answerQuestion(result){
     currentQuestionIndex++; // track our questions count
 
@@ -71,6 +85,10 @@ function showNextQuestion(){
     // create a new card based on the current question index
     card = createQuestionCard(questions[currentQuestionIndex]);
 
+    changeCard(card);
+}
+
+function changeCard(card){
     // remove the last question card from the cardDisplay if one exists
     if (cardDisplay.children.length > 0){
         cardDisplay.children[0].remove();
@@ -88,14 +106,14 @@ function startTest(){
 // ends the test
 function endTest(){
     alert("reached end of test");
+    changeCard(createHomeCard());
 }
 
-// ----------------- //
+// ---------------------------------- //
 
 // populate the questions //
 addQuestion("How old are you?", 1, 10,34,18,19);
 addQuestion("Dogs name?", 3, "Mowgli", "Lila", "Tommy", "Luna");
 addQuestion("Favorite Vegetable", 1, "Potato", "Onion", "Carrot", "Cucumber");
 
-// start the test //
-startTest();
+changeCard(createHomeCard());
