@@ -81,6 +81,8 @@ function createHomeCard(){
     return card;
 }
 
+// a card to display on quiz completion that allows
+// user to submit their initials for score records
 function createEndCard(){
     var card = document.createElement("section");
     card.setAttribute("class", "card");
@@ -103,14 +105,34 @@ function createEndCard(){
     a.setAttribute("href", "#");
     a.setAttribute("class", "button");
     a.textContent = "Submit";
-    a.onclick = function(){changeCard(createHomeCard());};
+    a.onclick = function(){
+        changeCard(createHomeCard());
+        var ul = document.getElementById("answerResults");
+        ul.innerHTML="";
+    };
     card.appendChild(a);
 
     return card;
 }
 
+function populateAnswerResults(){
+    var answerResults = document.getElementById("answerResults");
+
+    for (var i = 0; i < questions.length; i++)
+    {
+        var li = document.createElement("li");
+        answerResults.appendChild(li);
+    }
+}
+
 // function that is called when li(answer) is clicked
 function answerQuestion(result){
+
+    // change the color of the box in the answer tracker
+    var li = document.getElementById("answerResults").children[currentQuestionIndex];
+    var color = result ? "green" : "red";
+    li.setAttribute("style", `background-color:${color}`)
+
     currentQuestionIndex++; // track our questions count
 
     // if our current index is more than the amount of question
@@ -142,6 +164,7 @@ function changeCard(card){
 // starts the test
 function startTest(){
     currentQuestionIndex = 0; // ensure we are on the first question
+    populateAnswerResults();
     showNextQuestion();
 }
 

@@ -22,7 +22,7 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid black;
+    flex-direction: column;
 }
 
 #highScores{
@@ -56,9 +56,6 @@ main {
 }
 
 .questionCard{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
     align-items: flex-start;
 }
 
@@ -93,4 +90,19 @@ main {
 }
 #initials:focus{
     outline: none;
+}
+
+#answerResults{
+    margin: 10px;
+    display: flex;
+    justify-content: space-around;
+    
+}
+
+#answerResults li{
+    padding: 20px;
+    margin: 5px;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: lightgray;
 }
