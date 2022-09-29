@@ -119,6 +119,29 @@ function createEndCard(){
     return card;
 }
 
+function createHighScoresCard(){
+    var card = document.createElement("section");
+    card.setAttribute("class", "card");
+    card.setAttribute("id", "highscoresCard");
+
+    var h1 = document.createElement("h1");
+    h1.textContent = "High Scores";
+    card.appendChild(h1);
+
+    var ol = document.createElement("ol");
+    populateScores(ol);
+    card.appendChild(ol);
+
+    var a = document.createElement("a");
+    a.setAttribute("class", "button");
+    a.setAttribute("href", "#");
+    a.innerText = "Go Back";
+    a.onclick = function(){changeCard(createHomeCard()); viewScoresh1.setAttribute("style", "visibility:visible;");};
+    card.appendChild(a);
+
+    return card;
+}
+
 
 // this makes the little gray answer-result boxes appear
 function populateAnswerResults(){
@@ -178,6 +201,14 @@ function startTest(){
     viewScoresh1.setAttribute("style", "visibility:hidden");
 }
 
+function populateScores(ol){
+    for (var i = 0; i < 3; i++){
+        var li = document.createElement("li");
+        li.textContent = `user ${i}`;
+        ol.appendChild(li);
+    }
+}
+
 
 // ---------------------------------- //
 
@@ -196,3 +227,4 @@ addQuestion("Favorite Vegetable", 1, "Potato", "Onion", "Carrot", "Cucumber");
 // start off with a home-card and make the timer invisible
 changeCard(createHomeCard());
 timerh1.setAttribute("style", "visibility:hidden");
+viewScoresh1.onclick = function() {changeCard(createHighScoresCard()); viewScoresh1.setAttribute("style", "visibility:hidden;");};
