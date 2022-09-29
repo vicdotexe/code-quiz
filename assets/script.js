@@ -49,7 +49,7 @@ function createQuestionCard(question){
         a.textContent = question.answers[i];
         a.setAttribute("class", "answerOption button");
         a.setAttribute("href", "#");
-        a.onclick = function(){answerQuestion(question.getResult(i));};
+        a.addEventListener("click", function(){answerQuestion(question.getResult(i));});
         answersSection.appendChild(a);
     }
     
@@ -76,7 +76,7 @@ function createHomeCard(){
     a.setAttribute("class", "button")
     a.setAttribute("href", "#");
     a.textContent = "Start Test";
-    a.onclick = function(){startTest();};
+    a.addEventListener("click", startTest);
 
     card.appendChild(a);
 
@@ -107,13 +107,13 @@ function createEndCard(){
     a.setAttribute("href", "#");
     a.setAttribute("class", "button");
     a.textContent = "Submit";
-    a.onclick = function(){
+    a.addEventListener("click", function(){
         changeCard(createHomeCard());
         var ul = document.getElementById("answerResults");
         ul.innerHTML="";
         viewScoresh1.setAttribute("style", "visibility:visible");
         timerh1.setAttribute("style", "visibility:hidden");
-    };
+    });
     card.appendChild(a);
 
     return card;
@@ -136,7 +136,10 @@ function createHighScoresCard(){
     a.setAttribute("class", "button");
     a.setAttribute("href", "#");
     a.innerText = "Go Back";
-    a.onclick = function(){changeCard(createHomeCard()); viewScoresh1.setAttribute("style", "visibility:visible;");};
+    a.addEventListener("click", function(){
+        changeCard(createHomeCard()); 
+        viewScoresh1.setAttribute("style", "visibility:visible;");
+    });
     card.appendChild(a);
 
     return card;
@@ -227,4 +230,4 @@ addQuestion("Favorite Vegetable", 1, "Potato", "Onion", "Carrot", "Cucumber");
 // start off with a home-card and make the timer invisible
 changeCard(createHomeCard());
 timerh1.setAttribute("style", "visibility:hidden");
-viewScoresh1.onclick = function() {changeCard(createHighScoresCard()); viewScoresh1.setAttribute("style", "visibility:hidden;");};
+viewScoresh1.addEventListener("click", function() {changeCard(createHighScoresCard()); viewScoresh1.setAttribute("style", "visibility:hidden;");});
