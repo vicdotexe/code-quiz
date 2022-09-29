@@ -1,12 +1,28 @@
+:root{
+    --primaryColor: rgb(64, 0, 128);
+    --primaryOffsetColor: rgb(117, 73, 162);
+
+    --buttonBgColor: var(--primaryColor);
+    --buttonHighlightColor: var(--primaryOffsetColor);
+    --buttonTextColor: white;
+}
+
+a {
+    text-decoration: none;
+}
+
 header{
     display:flex;
     justify-content: space-between;
     align-items: flex-end;
+    padding: 10px;
 }
 
 main {
     display: flex;
     justify-content: center;
+    align-items: center;
+    border: 1px solid black;
 }
 
 #highScores{
@@ -20,5 +36,63 @@ main {
 #cardDisplay{
     width: 500px;
     height: 300px;
-    background-color: gray;
+    margin-top: 25px;
+}
+
+.card{
+    border: 1px solid black;
+    border-radius: 20px;
+    width: 100%;
+    height: 100%;
+    padding: 10px 20px;
+}
+
+#homeCard{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+#homeCard a{
+    display: block;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.questionCard{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.questionCard h1{
+    font-size: 24px;
+}
+
+#answersSection{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.answerOption{
+    border: 1px solid black;
+    border-radius: 10px;
+    margin: 5px 0px;
+    padding: 10px;
+    min-width: 50%;
+}
+
+.button {
+    transition: 0.2s;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    color: var(--buttonTextColor);
+    background-color: var(--buttonBgColor);
+
+}
+
+.button:hover{
+    background-color: var(--buttonHighlightColor);
 }

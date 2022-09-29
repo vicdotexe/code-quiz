@@ -2,7 +2,6 @@ var questions = [];
 var cardDisplay = document.querySelector("#cardDisplay");
 var currentQuestionIndex = 0;
 
-
 // create and add a question to the questions array
 function addQuestion(ask, correctIndex){
      // create the question object
@@ -37,32 +36,39 @@ function createQuestionCard(question){
     h1.textContent = question.ask;
     card.appendChild(h1);
 
-    // create a list
-    var ol = document.createElement("ol");
-    card.appendChild(ol);
+    // create a section for answers
+    var answersSection = document.createElement("section");
+    answersSection.setAttribute("id", "answersSection");
+    card.appendChild(answersSection);
 
     // create and add the possible answers to the list
     for(let i = 0; i < question.answers.length; i++){
-        var li = document.createElement("li");
-        li.textContent = question.answers[i];
-        li.onclick = function(){answerQuestion(question.getResult(i));};
-        ol.appendChild(li);
+        var a = document.createElement("a");
+        a.textContent = question.answers[i];
+        a.setAttribute("class", "answerOption button");
+        a.setAttribute("href", "#");
+        a.onclick = function(){answerQuestion(question.getResult(i));};
+        answersSection.appendChild(a);
     }
     
     // return the html section element created
     return card;
 }
 
+
+// creates a starting card to start the test at
 function createHomeCard(){
     var card = document.createElement("section");
     card.setAttribute("class", "card");
     card.setAttribute("id", "homeCard");
 
-    var button = document.createElement("h1");
-    button.textContent = "Start Test";
-    button.onclick = function(){startTest();};
+    var a = document.createElement("a");
+    a.setAttribute("class", "button")
+    a.setAttribute("href", "#");
+    a.textContent = "Start Test";
+    a.onclick = function(){startTest();};
 
-    card.appendChild(button);
+    card.appendChild(a);
 
     return card;
 }
@@ -111,7 +117,8 @@ function endTest(){
 
 // ---------------------------------- //
 
-// populate the questions //
+
+// populate the questions
 addQuestion("How old are you?", 1, 10,34,18,19);
 addQuestion("Dogs name?", 3, "Mowgli", "Lila", "Tommy", "Luna");
 addQuestion("Favorite Vegetable", 1, "Potato", "Onion", "Carrot", "Cucumber");
