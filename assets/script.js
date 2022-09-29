@@ -1,7 +1,10 @@
 var questions = [];
+
 var cardDisplay = document.querySelector("#cardDisplay");
 var timerh1 = document.querySelector("#timer");
 var viewScoresh1 = document.querySelector("#highscores");
+var answerResultsUl = document.querySelector("#answerResults");
+
 var currentQuestionIndex = 0;
 
 // create and add a question to the questions array
@@ -49,7 +52,10 @@ function createQuestionCard(question){
         a.textContent = question.answers[i];
         a.setAttribute("class", "answerOption button");
         a.setAttribute("href", "#");
-        a.addEventListener("click", function(){answerQuestion(question.getResult(i));});
+        a.addEventListener("click", function(event){
+            event.preventDefault();
+            answerQuestion(question.getResult(i));}
+            );
         answersSection.appendChild(a);
     }
     
@@ -76,7 +82,10 @@ function createHomeCard(){
     a.setAttribute("class", "button")
     a.setAttribute("href", "#");
     a.textContent = "Start Test";
-    a.addEventListener("click", startTest);
+    a.addEventListener("click", function(event){
+        event.preventDefault();
+        startTest();
+    });
 
     card.appendChild(a);
 
@@ -107,11 +116,11 @@ function createEndCard(){
     a.setAttribute("href", "#");
     a.setAttribute("class", "button");
     a.textContent = "Submit";
-    a.addEventListener("click", function(){
+    a.addEventListener("click", function(event){
+        event.preventDefault();
         changeCard(createHomeCard());
         var ul = document.getElementById("answerResults");
         ul.innerHTML="";
-        viewScoresh1.setAttribute("style", "visibility:visible");
         timerh1.setAttribute("style", "visibility:hidden");
     });
     card.appendChild(a);
@@ -136,9 +145,9 @@ function createHighScoresCard(){
     a.setAttribute("class", "button");
     a.setAttribute("href", "#");
     a.innerText = "Go Back";
-    a.addEventListener("click", function(){
+    a.addEventListener("click", function(event){
+        event.preventDefault();
         changeCard(createHomeCard()); 
-        viewScoresh1.setAttribute("style", "visibility:visible;");
     });
     card.appendChild(a);
 
@@ -149,7 +158,7 @@ function createHighScoresCard(){
 // this makes the little gray answer-result boxes appear
 function populateAnswerResults(){
     var answerResults = document.getElementById("answerResults");
-
+    
     for (var i = 0; i < questions.length; i++)
     {
         var li = document.createElement("li");
@@ -163,16 +172,28 @@ function answerQuestion(result){
     // change the color of the box in the answer tracker
     var li = document.querySelector("#answerResults").children[currentQuestionIndex];
     var color = result ? "green" : "red";
-    li.setAttribute("style", `background-color:${color}`)
+    li.setAttribute("style", `background-color:${color};`)
+    
 
     currentQuestionIndex++; // track our questions count
-
+    outlineActiveQuestion();
     // if our current index is more than the amount of question
     // then we have reached the end of the test, otherwise show next question
     if (currentQuestionIndex >= questions.length){
         changeCard(createEndCard());
     }else{
         showNextQuestion();
+    }
+}
+
+function outlineActiveQuestion(){
+    var lis = document.querySelector("#answerResults").children;
+    for (var i = 0; i < questions.length;  i++){
+        if (currentQuestionIndex == i){
+            lis[i].setAttribute("id", "current");
+        }else{
+            lis[i].removeAttribute("id");
+        }
     }
 }
 
@@ -198,10 +219,10 @@ function startTest(){
     currentQuestionIndex = 0; // ensure we are on the first question
     populateAnswerResults(); // show the gray answerboxes to track results
     showNextQuestion(); // kickoff the first question
+    outlineActiveQuestion();
 
     // adjust visibilities in the header
-    timerh1.setAttribute("style", "visibility:visible");
-    viewScoresh1.setAttribute("style", "visibility:hidden");
+    timerh1.setAttribute("style", "visibility:visible;");
 }
 
 function populateScores(ol){
@@ -230,4 +251,8 @@ addQuestion("Favorite Vegetable", 1, "Potato", "Onion", "Carrot", "Cucumber");
 // start off with a home-card and make the timer invisible
 changeCard(createHomeCard());
 timerh1.setAttribute("style", "visibility:hidden");
-viewScoresh1.addEventListener("click", function() {changeCard(createHighScoresCard()); viewScoresh1.setAttribute("style", "visibility:hidden;");});
+viewScoresh1.addEventListener("click", function(event) {
+    event.preventDefault();
+    viewScoresh1.setAttribute("style", "display:none;");
+    changeCard(createHighScoresCard()); 
+});
