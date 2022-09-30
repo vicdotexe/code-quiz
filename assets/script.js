@@ -284,15 +284,75 @@ function endTimer(hide){
 
 
 // Populate the questions.
-addQuestion("How old are you?", 1, 10,34,18,19);
-addQuestion("Dogs name?", 3, "Mowgli", "Lila", "Tommy", "Luna");
-addQuestion("Favorite Vegetable", 1, "Potato", "Onion", "Carrot", "Cucumber");
-addQuestion("How old are you?", 1, 10,34,18,19);
-addQuestion("Dogs name?", 3, "Mowgli", "Lila", "Tommy", "Luna");
-addQuestion("Favorite Vegetable", 1, "Potato", "Onion", "Carrot", "Cucumber");
-addQuestion("How old are you?", 1, 10,34,18,19);
-addQuestion("Dogs name?", 3, "Mowgli", "Lila", "Tommy", "Luna");
-addQuestion("Favorite Vegetable", 1, "Potato", "Onion", "Carrot", "Cucumber");
+addQuestion("Which JavaScript method is used to get a number as a string?", 
+2, 
+"intToString()",
+"parseInteger()",
+"toString()",
+"All of the above");
+
+addQuestion("Which is the correct syntax to call an external JavaScript file in the current HTML document?", 
+0, 
+`<script src="jsfile.js"></script>`,
+`<script href=" jsfile.js"></script>`,
+`<import src=" jsfile.js"></import>`,
+`<script link=" jsfile.js"></script>`);
+
+addQuestion("JavaScript is the programming language of the _____.", 
+2, 
+"Desktop",
+"Mobile",
+"Web",
+"Server");
+
+addQuestion("Which symbol is used separate JavaScript statements?", 
+3, 
+"Comma (,)",
+"Colon (:)",
+"Hyphen (_)",
+"Semicolon (;)");
+
+addQuestion("Which JavaScript method is used to write on browser's console?", 
+3, 
+"console.write()",
+"console.output()",
+"console.writeHTML()",
+"console.log()");
+
+addQuestion("In JavaScript, single line comment begins with ___.", 
+3, 
+"#",
+"/*",
+"$",
+"//");
+
+addQuestion("In JavaScript, multi-line comments start with __ and end with ___.", 
+0, 
+"/* and */",
+"<!—and -->",
+"## and ##",
+"// and //");
+
+addQuestion("What is the default value of an uninitialized variable?", 
+0, 
+"undefined",
+"0",
+"null",
+"NaN");
+
+addQuestion("JavaScript arrays are written with _____.", 
+0, 
+"square brackets []",
+`double quotes ""`,
+"curly brackets {}",
+"round brackets ()");
+
+addQuestion("Which JavaScript operator is used to determine the type of a variable?", 
+0, 
+"typeof",
+"TypeOf",
+"typeOf",
+"sizeof");
 
 // Start off with a home-card and make sure the timer is invisible.
 changeCard(createHomeCard());
