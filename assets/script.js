@@ -134,6 +134,7 @@ function createEndCard(){
         changeCard(createHomeCard());
         elements.answerResultsOl.innerHTML="";
         endTimer(true);
+        elements.answerResultsOl.setAttribute("style", "visibility: hidden");
     });
     card.appendChild(a);
 
@@ -254,8 +255,9 @@ function startTest(){
     showNextQuestion(); // kickoff the first question
     startTimer();
 
-    // adjust visibilities in the header
+    // adjust visibilities
     elements.timerh1.setAttribute("style", "visibility:visible;");
+    elements.answerResultsOl.setAttribute("style", "visibility: visible");
 }
 
 /* Populates the scoreboard */
@@ -395,5 +397,6 @@ elements.viewScoresh1.addEventListener("click", function(event) {
     changeCard(createHighScoresCard());
     elements.answerResultsOl.innerHTML="";
     elements.viewScoresh1.setAttribute("style", "visibility: hidden");
+    elements.answerResultsOl.setAttribute("style", "visibility: hidden");
     endTimer(true);
 });

@@ -36,7 +36,7 @@ header{
     align-items: center;
     padding: 10px;
     background-color: var(--headerBgColor);
-    box-shadow: 0px 5px 5px var(--boxshadowColor), inset 0px 10px 10px var(--secondaryLight);
+    box-shadow: 0px 4px 7px var(--boxshadowColor), inset 0px 10px 10px var(--secondaryLight);
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
 }
@@ -107,7 +107,7 @@ main {
     height: 100%;
     padding: 10px 20px;
     background-color: var(--cardBgColor);
-    box-shadow: 0px 5px 5px var(--boxshadowColor), inset 0px 10px 15px var(--secondaryLight);
+    box-shadow: 0px 5px 7px var(--boxshadowColor), inset 0px 5px 15px var(--secondaryLight);
 }
 
 .card h1{
@@ -163,6 +163,7 @@ main {
     background-color: var(--secondaryColor);
     box-shadow: 0px 4px 5px var(--boxshadowColor), inset 0px 5px 15px var(--secondaryLight);
     padding: 5px;
+    visibility: hidden;
 }
 
 #answerResults li{
