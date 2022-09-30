@@ -135,6 +135,7 @@ function createEndCard(){
         elements.answerResultsOl.innerHTML="";
         endTimer(true);
         elements.answerResultsOl.setAttribute("style", "visibility: hidden");
+        saveScore(input.value ? input.value : "???", timeLeft);
     });
     card.appendChild(a);
 
@@ -151,7 +152,7 @@ function createHighScoresCard(){
     h1.textContent = "High Scores";
     card.appendChild(h1);
 
-    var ol = document.createElement("ol");
+    var ol = document.createElement("ul");
     populateScores(ol);
     card.appendChild(ol);
 
@@ -262,9 +263,23 @@ function startTest(){
 
 /* Populates the scoreboard */
 function populateScores(ol){
-    for (var i = 0; i < 3; i++){
+    var scores = JSON.parse(localStorage.getItem("scores"));
+    if (scores == null){
+        return;
+    }
+    scores = scores.sort((s1,s2)=> {
+        if (s1.score > s2.score)
+        return -1;
+        else
+        return 1;
+    });
+    
+    for (var i = 0; i < scores.length; i++){
+        if (i==5){
+            break;
+        }
         var li = document.createElement("li");
-        li.textContent = `user ${i}`;
+        li.textContent = `${scores[i].score} - ${scores[i].name}`;
         ol.appendChild(li);
     }
 }
@@ -312,6 +327,19 @@ function flashCost(){
     setTimeout(() => {
         elements.costh3.setAttribute("style", "visibility: hidden");
     }, 750);
+}
+
+function saveScore(name, score){
+    var scores = JSON.parse(localStorage.getItem("scores"));
+    if (scores == null){
+        scores = [];
+    }
+    scores.push({
+        score: score, 
+        name: name
+    });
+    
+    localStorage.setItem("scores", JSON.stringify(scores));
 }
 
 // ---------------------------------- //

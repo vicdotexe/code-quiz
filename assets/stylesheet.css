@@ -8,7 +8,7 @@
     --buttonHighlightColor: var(--primaryOffsetColor);
     --buttonTextColor: white;
 
-    --bgColor: rgb(208, 203, 185);
+    --bgColor: rgb(215, 207, 180);
     --headerBgColor: var(--secondaryColor);
     --cardBgColor: var(--secondaryColor);
 
@@ -57,14 +57,13 @@ main {
     font-size: 40px;
 }
 
-#highscoresCard ol{
+#highscoresCard ul{
     list-style-position: inside;
 }
 
-#highscoresCard ol li {
-    font-size: 20px;
+#highscoresCard ul li {
+    font-size: 24px;
     margin: 5px;
-    
 }
 
 #score {
@@ -156,7 +155,7 @@ main {
 }
 
 #answerResults{
-    margin: 10px;
+    margin: 20px;
     display: flex;
     justify-content: space-around;
     border-radius: 10px;
