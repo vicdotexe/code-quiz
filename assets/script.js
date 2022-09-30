@@ -239,10 +239,8 @@ function showNextQuestion(){
 
 /* Changes the the current card */
 function changeCard(card){
-    // remove the last card from the cardDisplay if one exists
-    if (cardDisplay.children.length > 0){
-        cardDisplay.children[0].remove();
-    }
+    // clear the card display
+    cardDisplay.innerHTML = "";
     // add the new card
     cardDisplay.appendChild(card);
 }
@@ -415,6 +413,8 @@ addQuestion("Which JavaScript operator is used to determine the type of a variab
 "TypeOf",
 "typeOf",
 "sizeof");
+
+// ------------------------------------------ //
 
 // Start off with a home-card
 changeCard(createHomeCard());
