@@ -3,11 +3,16 @@ var elements = {
     cardDisplay: document.querySelector("#cardDisplay"),
     timerh1: document.querySelector("#timer"),
     viewScoresh1: document.querySelector("#highscores"),
-    answerResultsOl: document.querySelector("#answerResults")
+    answerResultsOl: document.querySelector("#answerResults"),
+    timerh1: document.querySelector("#timer")
 }
 
 var questions = [];
 var currentQuestionIndex = 0;
+var timer;
+var timeLeft;
+var testTime = 60;
+var cost = 5;
 
 /* Creates and adds a question object to the questions array. */
 function addQuestion(ask, correctIndex){
@@ -122,9 +127,8 @@ function createEndCard(){
     a.addEventListener("click", function(event){
         event.preventDefault();
         changeCard(createHomeCard());
-        var ul = document.getElementById("answerResults");
-        ul.innerHTML="";
-        elements.timerh1.setAttribute("style", "visibility:hidden");
+        elements.answerResultsOl.innerHTML="";
+        endTimer(true);
     });
     card.appendChild(a);
 
@@ -151,7 +155,7 @@ function createHighScoresCard(){
     a.innerText = "Go Back";
     a.addEventListener("click", function(event){
         event.preventDefault();
-        changeCard(createHomeCard()); 
+        changeCard(createHomeCard());
     });
     card.appendChild(a);
 
@@ -179,10 +183,22 @@ function answerQuestion(result){
 
     currentQuestionIndex++; // track our questions count
     outlineActiveQuestion();
+
+    if (!result){
+        timeLeft -= cost;
+    }
+    if (timeLeft <= 0){
+        timeLeft = 0;
+        changeCard(createEndCard());
+        endTimer();
+        return;
+    }
+
     // if our current index is more than the amount of question
     // then we have reached the end of the test, otherwise show next question
-    if (currentQuestionIndex >= questions.length){
+    if (currentQuestionIndex >= questions.length || timeLeft <=0){
         changeCard(createEndCard());
+        endTimer();
     }else{
         showNextQuestion();
     }
@@ -221,8 +237,9 @@ function changeCard(card){
 function startTest(){
     currentQuestionIndex = 0; // ensure we are on the first question
     populateAnswerResults(); // show the gray answerboxes to track results
-    showNextQuestion(); // kickoff the first question
     outlineActiveQuestion();
+    showNextQuestion(); // kickoff the first question
+    startTimer();
 
     // adjust visibilities in the header
     elements.timerh1.setAttribute("style", "visibility:visible;");
@@ -235,6 +252,31 @@ function populateScores(ol){
         li.textContent = `user ${i}`;
         ol.appendChild(li);
     }
+}
+
+function startTimer(){
+    elements.timerh1.setAttribute("style", "visisbility: visible;")
+    timeLeft = testTime;
+    elements.timerh1.innerText = `${timeLeft}`;
+    timer = setInterval(onTimerTick, 1000);
+}
+
+function onTimerTick(){
+    timeLeft--;
+    
+    if (timeLeft <= 0){
+        timeLeft = 0;
+        changeCard(createEndCard());
+        endTimer();
+    }
+    elements.timerh1.innerText = `${timeLeft}`;
+}
+
+function endTimer(hide){
+    if (hide){
+        elements.timerh1.setAttribute("style", "visibility: hidden;");
+    }
+    clearInterval(timer);
 }
 
 
@@ -259,5 +301,7 @@ elements.timerh1.setAttribute("style", "visibility:hidden");
 // Give functionality to clicking on 'view highscores'.
 elements.viewScoresh1.addEventListener("click", function(event) {
     event.preventDefault();
-    changeCard(createHighScoresCard()); 
+    changeCard(createHighScoresCard());
+    elements.answerResultsOl.innerHTML="";
+    endTimer(true);
 });
