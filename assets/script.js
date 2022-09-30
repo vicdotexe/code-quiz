@@ -4,7 +4,8 @@ var elements = {
     timerh1: document.querySelector("#timer"),
     viewScoresh1: document.querySelector("#highscores"),
     answerResultsOl: document.querySelector("#answerResults"),
-    timerh1: document.querySelector("#timer")
+    timerh1: document.querySelector("#timer"),
+    costh3: document.querySelector("#cost")
 }
 
 var questions = [];
@@ -160,6 +161,7 @@ function createHighScoresCard(){
     a.addEventListener("click", function(event){
         event.preventDefault();
         changeCard(createHomeCard());
+        elements.viewScoresh1.setAttribute("style", "visibility:visible");
     });
     card.appendChild(a);
 
@@ -190,6 +192,7 @@ function answerQuestion(result){
 
     if (!result){
         timeLeft -= cost;
+        flashCost();
         if (timeLeft <= 0){
             timeLeft = 0;
         }
@@ -264,6 +267,7 @@ function populateScores(ol){
     }
 }
 
+/* Starts the timer and makes it visible */
 function startTimer(){
     elements.timerh1.setAttribute("style", "visisbility: visible;")
     timeLeft = testTime;
@@ -271,6 +275,7 @@ function startTimer(){
     timer = setInterval(onTimerTick, 1000);
 }
 
+/* timer tick function */
 function onTimerTick(){
     timeLeft--;
     
@@ -282,6 +287,7 @@ function onTimerTick(){
     elements.timerh1.innerText = `${timeLeft}`;
 }
 
+/* ends the timer with the option to hide it */
 function endTimer(hide){
     if (hide){
         elements.timerh1.setAttribute("style", "visibility: hidden;");
@@ -297,6 +303,13 @@ function shuffleArray(array) {
         array[i] = array[j];
         array[j] = temp;
     }
+}
+
+function flashCost(){
+    elements.costh3.setAttribute("style", "visibility: visible");
+    setTimeout(() => {
+        elements.costh3.setAttribute("style", "visibility: hidden");
+    }, 750);
 }
 
 // ---------------------------------- //
@@ -373,14 +386,14 @@ addQuestion("Which JavaScript operator is used to determine the type of a variab
 "typeOf",
 "sizeof");
 
-// Start off with a home-card and make sure the timer is invisible.
+// Start off with a home-card
 changeCard(createHomeCard());
-elements.timerh1.setAttribute("style", "visibility:hidden");
 
 // Give functionality to clicking on 'view highscores'.
 elements.viewScoresh1.addEventListener("click", function(event) {
     event.preventDefault();
     changeCard(createHighScoresCard());
     elements.answerResultsOl.innerHTML="";
+    elements.viewScoresh1.setAttribute("style", "visibility: hidden");
     endTimer(true);
 });
