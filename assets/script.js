@@ -1,15 +1,18 @@
+/* Static elements for easy access */
+var elements = {
+    cardDisplay: document.querySelector("#cardDisplay"),
+    timerh1: document.querySelector("#timer"),
+    viewScoresh1: document.querySelector("#highscores"),
+    answerResultsOl: document.querySelector("#answerResults")
+}
+
 var questions = [];
-
-var cardDisplay = document.querySelector("#cardDisplay");
-var timerh1 = document.querySelector("#timer");
-var viewScoresh1 = document.querySelector("#highscores");
-var answerResultsUl = document.querySelector("#answerResults");
-
 var currentQuestionIndex = 0;
 
-// create and add a question to the questions array
+/* Creates and adds a question object to the questions array. */
 function addQuestion(ask, correctIndex){
-     // create the question object
+
+    // create the question object
     var question = {
         // function that returns whether an answer was correct or not for this question
         getResult: function (answer){
@@ -20,7 +23,7 @@ function addQuestion(ask, correctIndex){
     question.correctIndex = correctIndex; // assign the index of the correct answer
     question.answers = []; // create an array of possible answers
     
-    // assign any additional arguments to the answers array
+    // assign any additional arguments as answers
     for (var i = 2; i < arguments.length; i++){
         question.answers[i-2] = arguments[i];
     }
@@ -29,10 +32,10 @@ function addQuestion(ask, correctIndex){
     questions.push(question);
 }
 
-// create an html section that represents a question and its options
+/* Creates an html section that represents a question and its options. */
 function createQuestionCard(question){
 
-    // create the actual card section
+    // create the section with a card class
     var card = document.createElement("section");
     card.setAttribute("class","card questionCard");
     
@@ -64,7 +67,7 @@ function createQuestionCard(question){
 }
 
 
-// creates a starting card to start the test at
+// Creates an html section to start the test at.
 function createHomeCard(){
     var card = document.createElement("section");
     card.setAttribute("class", "card");
@@ -92,8 +95,8 @@ function createHomeCard(){
     return card;
 }
 
-// a card to display on quiz completion that allows
-// user to submit their initials for score records
+/* Creates an html section to display on quiz completion that allows
+    user to submit their initials for score records */
 function createEndCard(){
     var card = document.createElement("section");
     card.setAttribute("class", "card");
@@ -121,13 +124,14 @@ function createEndCard(){
         changeCard(createHomeCard());
         var ul = document.getElementById("answerResults");
         ul.innerHTML="";
-        timerh1.setAttribute("style", "visibility:hidden");
+        elements.timerh1.setAttribute("style", "visibility:hidden");
     });
     card.appendChild(a);
 
     return card;
 }
 
+/* Creates an html section for displaying the high scores */
 function createHighScoresCard(){
     var card = document.createElement("section");
     card.setAttribute("class", "card");
@@ -155,23 +159,21 @@ function createHighScoresCard(){
 }
 
 
-// this makes the little gray answer-result boxes appear
+/* This makes the little gray answer-result boxes appear */
 function populateAnswerResults(){
-    var answerResults = document.getElementById("answerResults");
-    
     for (var i = 0; i < questions.length; i++)
     {
         var li = document.createElement("li");
-        answerResults.appendChild(li);
+        elements.answerResultsOl.appendChild(li);
     }
 }
 
-// function that is called when li(answer) is clicked
+/* Processes the action of clicking an answer */
 function answerQuestion(result){
 
     // change the color of the box in the answer tracker
     var li = document.querySelector("#answerResults").children[currentQuestionIndex];
-    var color = result ? "green" : "red";
+    var color = result ? "rgb(138, 202, 181)" : "rgb(202, 159, 138)";
     li.setAttribute("style", `background-color:${color};`)
     
 
@@ -186,8 +188,10 @@ function answerQuestion(result){
     }
 }
 
+/* Iterates through the answer-result boxes to apply a unique id
+    to the box associated with the current question. */
 function outlineActiveQuestion(){
-    var lis = document.querySelector("#answerResults").children;
+    var lis = elements.answerResultsOl.children;
     for (var i = 0; i < questions.length;  i++){
         if (currentQuestionIndex == i){
             lis[i].setAttribute("id", "current");
@@ -197,16 +201,15 @@ function outlineActiveQuestion(){
     }
 }
 
-// called to display the next question card
+/* Creates and shows the next question card */
 function showNextQuestion(){
-    // create a new card based on the current question index
-    card = createQuestionCard(questions[currentQuestionIndex]);
-
+    card = createQuestionCard(questions[currentQuestionIndex]); // create a new card based on the current question index
     changeCard(card);
 }
 
+/* Changes the the current card */
 function changeCard(card){
-    // remove the last question card from the cardDisplay if one exists
+    // remove the last card from the cardDisplay if one exists
     if (cardDisplay.children.length > 0){
         cardDisplay.children[0].remove();
     }
@@ -214,7 +217,7 @@ function changeCard(card){
     cardDisplay.appendChild(card);
 }
 
-// starts the test
+/* Starts the test */
 function startTest(){
     currentQuestionIndex = 0; // ensure we are on the first question
     populateAnswerResults(); // show the gray answerboxes to track results
@@ -222,9 +225,10 @@ function startTest(){
     outlineActiveQuestion();
 
     // adjust visibilities in the header
-    timerh1.setAttribute("style", "visibility:visible;");
+    elements.timerh1.setAttribute("style", "visibility:visible;");
 }
 
+/* Populates the scoreboard */
 function populateScores(ol){
     for (var i = 0; i < 3; i++){
         var li = document.createElement("li");
@@ -237,7 +241,7 @@ function populateScores(ol){
 // ---------------------------------- //
 
 
-// populate the questions
+// Populate the questions.
 addQuestion("How old are you?", 1, 10,34,18,19);
 addQuestion("Dogs name?", 3, "Mowgli", "Lila", "Tommy", "Luna");
 addQuestion("Favorite Vegetable", 1, "Potato", "Onion", "Carrot", "Cucumber");
@@ -248,11 +252,12 @@ addQuestion("How old are you?", 1, 10,34,18,19);
 addQuestion("Dogs name?", 3, "Mowgli", "Lila", "Tommy", "Luna");
 addQuestion("Favorite Vegetable", 1, "Potato", "Onion", "Carrot", "Cucumber");
 
-// start off with a home-card and make the timer invisible
+// Start off with a home-card and make sure the timer is invisible.
 changeCard(createHomeCard());
-timerh1.setAttribute("style", "visibility:hidden");
-viewScoresh1.addEventListener("click", function(event) {
+elements.timerh1.setAttribute("style", "visibility:hidden");
+
+// Give functionality to clicking on 'view highscores'.
+elements.viewScoresh1.addEventListener("click", function(event) {
     event.preventDefault();
-    viewScoresh1.setAttribute("style", "display:none;");
     changeCard(createHighScoresCard()); 
 });

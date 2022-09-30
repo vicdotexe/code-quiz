@@ -1,12 +1,26 @@
 :root{
-    --primaryColor: rgb(64, 0, 128);
-    --primaryOffsetColor: rgb(117, 73, 162);
+    --primaryColor: rgb(123, 163, 132);
+    --primaryOffsetColor: rgb(87, 159, 104);
 
+    --secondaryColor: rgb(150, 185, 192);
+    --secondaryLight: rgb(178, 205, 210);
     --buttonBgColor: var(--primaryColor);
     --buttonHighlightColor: var(--primaryOffsetColor);
     --buttonTextColor: white;
+
+    --bgColor: rgb(208, 203, 185);
+    --headerBgColor: var(--secondaryColor);
+    --cardBgColor: var(--secondaryColor);
+
+    --boxshadowColor: rgb(11, 11, 11,0.4);
+
+    --timerColor: rgb(126, 167, 175);
+    --initialsBgColor: var(--secondaryLight);
 }
 
+body {
+    background-color: var(--bgColor);
+}
 a {
     text-decoration: none;
 }
@@ -16,6 +30,10 @@ header{
     justify-content: space-between;
     align-items: center;
     padding: 10px;
+    background-color: var(--headerBgColor);
+    box-shadow: 0px 5px 5px var(--boxshadowColor);
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 main {
@@ -29,8 +47,23 @@ main {
     font-size: 40px;
 }
 
+#highscoresCard ol{
+    list-style-position: inside;
+}
+
+#highscoresCard ol li {
+    font-size: 20px;
+    margin: 5px;
+    
+}
+
 #timer {
     font-size: 30px;
+    font-family: 'Courier New', Courier, monospace;
+    background-color: var(--timerColor);
+    padding: 5px;
+    border-radius: 10px;
+    color:white;
 }
 
 #cardDisplay{
@@ -44,11 +77,13 @@ main {
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    border: 1px solid black;
+    border: 2px solid rgb(93, 125, 114);
     border-radius: 20px;
     width: 100%;
     height: 100%;
     padding: 10px 20px;
+    background-color: var(--cardBgColor);
+    box-shadow: 5px 5px 5px var(--boxshadowColor);
 }
 
 .card h1{
@@ -84,10 +119,16 @@ main {
 
 #initials{
     padding: 10px;
-    border: 2px dashed black;
+    border: 2px dashed rgba(255, 255, 255, 0.361);
     border-radius: 10px;
     text-align: center;
+    background-color: var(--initialsBgColor);
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 24px;
+    color:white;
+    font-weight: bolder;
 }
+
 #initials:focus{
     outline: none;
 }
@@ -96,16 +137,15 @@ main {
     margin: 10px;
     display: flex;
     justify-content: space-around;
-    
 }
 
 #answerResults li{
     padding: 20px;
     margin: 5px;
     border-radius: 10px;
-    background-color: lightgray;
+    background-color: rgb(190, 190, 190);
 }
 
 #current {
-    border: 2px solid orange;
+    border: 2px solid rgb(180, 158, 118);
 }
