@@ -17,10 +17,15 @@
     --timerColor: rgb(126, 167, 175);
     --initialsBgColor: var(--secondaryLight);
 }
+*{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color:rgb(66, 80, 69);
+}
 
 body {
     background-color: var(--bgColor);
 }
+
 a {
     text-decoration: none;
 }
@@ -43,6 +48,11 @@ main {
     flex-direction: column;
 }
 
+#endCard h2{
+    font-size: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+}
 #highScores{
     font-size: 40px;
 }

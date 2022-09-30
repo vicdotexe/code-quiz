@@ -12,7 +12,7 @@ var currentQuestionIndex = 0;
 var timer;
 var timeLeft;
 var testTime = 60;
-var cost = 5;
+var cost = 10;
 
 /* Creates and adds a question object to the questions array. */
 function addQuestion(ask, correctIndex){
@@ -111,6 +111,10 @@ function createEndCard(){
     h1.textContent = "Quiz Complete!";
     card.appendChild(h1);
 
+    var h2 = document.createElement("h2");
+    h2.textContent = `Score: ${timeLeft}`;
+    card.appendChild(h2);
+
     var p = document.createElement("p");
     p.textContent = "Enter your initials to save your score.";
     card.appendChild(p);
@@ -186,13 +190,18 @@ function answerQuestion(result){
 
     if (!result){
         timeLeft -= cost;
+        if (timeLeft <= 0){
+            timeLeft = 0;
+        }
+        elements.timerh1.textContent = timeLeft;
+        if (timeLeft <= 0){
+            timeLeft = 0;
+            changeCard(createEndCard());
+            endTimer();
+            return;
+        }
     }
-    if (timeLeft <= 0){
-        timeLeft = 0;
-        changeCard(createEndCard());
-        endTimer();
-        return;
-    }
+
 
     // if our current index is more than the amount of question
     // then we have reached the end of the test, otherwise show next question
@@ -235,6 +244,7 @@ function changeCard(card){
 
 /* Starts the test */
 function startTest(){
+    shuffleArray(questions);
     currentQuestionIndex = 0; // ensure we are on the first question
     populateAnswerResults(); // show the gray answerboxes to track results
     outlineActiveQuestion();
@@ -279,6 +289,15 @@ function endTimer(hide){
     clearInterval(timer);
 }
 
+/* Randomize array in-place using Durstenfeld shuffle algorithm */
+function shuffleArray(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+}
 
 // ---------------------------------- //
 
