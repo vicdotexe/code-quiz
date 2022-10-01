@@ -2,7 +2,7 @@
 
 # Description
 
-A timed quiz on basic javascript, with randomization, penalties, local score saving, and progress tracking.
+A timed quiz on basic javascript, with randomization, penalties, local score saving, and progress tracking. This app will run in the browser and features dynamically updated HTML and CSS powered by JavaScript.
 
 # Screenshots
 
