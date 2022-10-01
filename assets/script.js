@@ -15,28 +15,34 @@ var testTime = 60;
 var cost = 10;
 
 /**
- * Creates and adds a question object to the questions object.
+ * Creates and adds a question object to the questions array.
  * @param {string} ask The question to be asked.
  * @param {int} correctIndex The zero based index of the correct answer
- * @param {...string} arguments Any adittional arguments will be treated as potential answers.
+ * @param {...string} arguments Any additional arguments will be treated as potential answers.
  */
-function addQuestion(ask, correctIndex){
+function addQuestion(ask, correctIndex, answers){
     // create the question object
     var question = {
-        // function that returns whether an answer was correct or not for this question
-        getResult: function (answer){
-            return answer == this.correctIndex;
+        ask: ask,
+        correctIndex: correctIndex,
+        answers: answers,
+        
+        // Checks if the index is considered the correct answer.
+        getResult: function (index){
+            return index == this.correctIndex;
+        },
+        // Shuffles the answers, maintaining the correct index.
+        shuffleAnswers: function(){
+            var correctAnswer = this.answers[this.correctIndex];
+            shuffleArray(this.answers);
+            for(let i = 0; i < this.answers.length; i++){
+                if (this.answers[i] == correctAnswer){
+                    this.correctIndex = i;
+                    break;
+                }
+            }
         }
     };
-    question.ask = ask; // assign the content of what the question is asking
-    question.correctIndex = correctIndex; // assign the index of the correct answer
-    question.answers = []; // create an array of possible answers
-    
-    // assign any additional arguments as answers
-    for (var i = 2; i < arguments.length; i++){
-        question.answers[i-2] = arguments[i];
-    }
-
     // return the populated question item
     questions.push(question);
 }
@@ -46,6 +52,7 @@ function addQuestion(ask, correctIndex){
  * @param {question} question The question object to be injected into the card.
  */
 function createQuestionCard(question){
+    question.getResult
     // create the section with a card class
     var card = document.createElement("section");
     card.setAttribute("class","card questionCard");
@@ -209,7 +216,10 @@ function answerQuestion(result){
 function showNextQuestion(){
     currentQuestionIndex++; // advance the question index
     outlineActiveQuestion(); // outline it in our tracker
-    card = createQuestionCard(questions[currentQuestionIndex]); // create a new card based on the current question index
+    var nextQuestion = questions[currentQuestionIndex];
+    //shuffleAnswers(nextQuestion);
+    nextQuestion.shuffleAnswers();
+    card = createQuestionCard(nextQuestion); // create a new card based on the current question index
     changeCard(card);
 }
 
@@ -300,7 +310,7 @@ function onTimerTick(){
     elements.timerh1.innerText = `${timeLeft}`;
 }
 
-/** Ends the timers and  */
+/** Ends the timer and hides the element*/
 function endTimer(){
     elements.timerh1.setAttribute("style", "visibility: hidden;");
     clearInterval(timer);
@@ -388,73 +398,73 @@ function onClick(event){
 // Populate the questions.
 addQuestion("Which JavaScript method is used to get a number as a string?", 
 2, 
-"intToString()",
+["intToString()",
 "parseInteger()",
 "toString()",
-"All of the above");
+"All of the above"]);
 
 addQuestion("Which is the correct syntax to call an external JavaScript file in the current HTML document?", 
 0, 
-`<script src="jsfile.js"></script>`,
+[`<script src="jsfile.js"></script>`,
 `<script href=" jsfile.js"></script>`,
 `<import src=" jsfile.js"></import>`,
-`<script link=" jsfile.js"></script>`);
+`<script link=" jsfile.js"></script>`]);
 
 addQuestion("JavaScript is the programming language of the _____.", 
 2, 
-"Desktop",
+["Desktop",
 "Mobile",
 "Web",
-"Server");
+"Server"]);
 
 addQuestion("Which symbol is used separate JavaScript statements?", 
 3, 
-"Comma (,)",
+["Comma (,)",
 "Colon (:)",
 "Hyphen (_)",
-"Semicolon (;)");
+"Semicolon (;)"]);
 
 addQuestion("Which JavaScript method is used to write on browser's console?", 
 3, 
-"console.write()",
+["]console.write()",
 "console.output()",
 "console.writeHTML()",
-"console.log()");
+"console.log()"]);
 
 addQuestion("In JavaScript, single line comment begins with ___.", 
 3, 
-"#",
+["#",
 "/*",
 "$",
-"//");
+"//"]);
 
 addQuestion("In JavaScript, multi-line comments start with __ and end with ___.", 
 0, 
-"/* and */",
+["/* and */",
 "<!—and -->",
 "## and ##",
-"// and //");
+"// and //"]);
 
 addQuestion("What is the default value of an uninitialized variable?", 
 0, 
-"undefined",
+["undefined",
 "0",
 "null",
-"NaN");
+"NaN"]);
 
 addQuestion("JavaScript arrays are written with _____.", 
 0, 
-"square brackets []",
+["square brackets []",
 `double quotes ""`,
 "curly brackets {}",
-"round brackets ()");
+"round brackets ()"]);
 
 addQuestion("Which JavaScript operator is used to determine the type of a variable?", 
 0, 
-"typeof",
+["typeof",
 "TypeOf",
 "typeOf",
-"sizeof");
+"sizeof"]);
 
 // ------------------------------------------ //
 
