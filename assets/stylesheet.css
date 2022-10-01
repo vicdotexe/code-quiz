@@ -26,10 +26,6 @@ body {
     background-color: var(--bgColor);
 }
 
-a {
-    text-decoration: none;
-}
-
 header{
     display:flex;
     justify-content: space-between;
@@ -48,7 +44,8 @@ main {
     flex-direction: column;
 }
 
-.button {
+button {
+    border-style: none;
     border-radius: 10px;
     margin: 5px 0px;
     padding: 10px;
@@ -59,7 +56,7 @@ main {
     cursor:pointer;
 }
 
-.button:hover{
+button:hover{
     background-color: var(--buttonHighlightColor);
 }
 

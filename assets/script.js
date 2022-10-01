@@ -62,9 +62,8 @@ function createQuestionCard(question){
 
     // create and add the possible answers to the list
     for(let i = 0; i < question.answers.length; i++){
-        var a = document.createElement("a");
+        var a = document.createElement("button");
         a.textContent = question.answers[i];
-        a.setAttribute("class", "button");
         a.setAttribute("data-buttonFunction","answerQuestion");
         a.setAttribute("data-answerIndex", i);
         answersSection.appendChild(a);
@@ -91,8 +90,7 @@ function createHomeCard(){
     p.textContent="Must complete the quiz within the time-limit to place a score. Your score will be the time remaining. Incorrect answers will reduce your remaining time left."
     card.appendChild(p);
 
-    var a = document.createElement("a");
-    a.setAttribute("class", "button")
+    var a = document.createElement("button");
     a.setAttribute("data-buttonFunction", "startTest");
     a.textContent = "Start Test";
 
@@ -127,9 +125,8 @@ function createEndCard(){
     input.setAttribute("type", "text");
     card.appendChild(input);
 
-    var a = document.createElement("a");
+    var a = document.createElement("button");
     a.setAttribute("data-buttonFunction", "submitName");
-    a.setAttribute("class", "button");
     a.textContent = "Submit";
     card.appendChild(a);
 
@@ -152,8 +149,7 @@ function createHighScoresCard(){
     populateScores(ul);
     card.appendChild(ul);
 
-    var a = document.createElement("a");
-    a.setAttribute("class", "button");
+    var a = document.createElement("button");
     a.setAttribute("data-buttonFunction", "goBack");
     a.innerText = "Go Back";
     card.appendChild(a);
@@ -346,12 +342,14 @@ function saveScore(name, score){
 
 /** Catch-all for button clicks */
 function onClick(event){
-    if (!event.target.getAttribute("class", "button")){
+    var bFunc = event.target.getAttribute("data-buttonFunction");
+
+    if (!bFunc){
         return;
     }
     event.preventDefault();
 
-    var bFunc = event.target.getAttribute("data-buttonFunction");
+    
     switch (bFunc){
         case "startTest":
             startTest();
