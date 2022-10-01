@@ -245,6 +245,7 @@ function changeCard(card){
  * populates the answer-result boxes, and shows the first question card.
  */
 function startTest(){
+    elements.viewScoresh1.setAttribute("style", "visibility: hidden");
     shuffleArray(questions); 
     populateAnswerResults(); // show the gray answerboxes to track results
     outlineActiveQuestion();
@@ -360,6 +361,7 @@ function onClick(event){
             endTimer(true);
             elements.answerResultsOl.setAttribute("style", "visibility: hidden");
             saveScore(input.value ? input.value : "???", timeLeft);
+            elements.viewScoresh1.setAttribute("style", "visibility:visible");
             break;
         case "answerQuestion":
             var index = event.target.getAttribute("data-answerIndex");
