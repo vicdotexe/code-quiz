@@ -48,36 +48,19 @@ main {
     flex-direction: column;
 }
 
-#endCard h2{
-    font-size: 20px;
-    font-family: 'Courier New', Courier, monospace;
+.button {
+    border-radius: 10px;
+    margin: 5px 0px;
+    padding: 10px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-weight: bold;
-}
-#highScores{
-    font-size: 40px;
-}
-
-#highscoresCard ul{
-    list-style-position: inside;
+    color: var(--buttonTextColor);
+    background-color: var(--buttonBgColor);
+    cursor:pointer;
 }
 
-#highscoresCard ul li {
-    font-size: 24px;
-    margin: 5px;
-}
-
-#score {
-    display: flex;
-    align-items: center;
-}
-
-#score h3{
-    padding: 0 10px;
-    font-size: 30px;
-    font-family: 'Courier New', Courier, monospace;
-    font-weight: bold;
-    color: rgb(205, 119, 112);
-    visibility: hidden;
+.button:hover{
+    background-color: var(--buttonHighlightColor);
 }
 
 #timer {
@@ -124,19 +107,36 @@ main {
     align-items: flex-start;
 }
 
-.button {
-    border-radius: 10px;
-    margin: 5px 0px;
-    padding: 10px;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+#endCard h2{
+    font-size: 20px;
+    font-family: 'Courier New', Courier, monospace;
     font-weight: bold;
-    color: var(--buttonTextColor);
-    background-color: var(--buttonBgColor);
-    cursor:pointer;
+}
+#highScores{
+    font-size: 40px;
 }
 
-.button:hover{
-    background-color: var(--buttonHighlightColor);
+#highscoresCard ul{
+    list-style-position: inside;
+}
+
+#highscoresCard ul li {
+    font-size: 24px;
+    margin: 5px;
+}
+
+#score {
+    display: flex;
+    align-items: center;
+}
+
+#score h3{
+    padding: 0 10px;
+    font-size: 30px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    color: rgb(205, 119, 112);
+    visibility: hidden;
 }
 
 #initials{

@@ -62,7 +62,7 @@ function createQuestionCard(question){
 
     // create and add the possible answers to the list
     for(let i = 0; i < question.answers.length; i++){
-        var a = document.createElement("h3");
+        var a = document.createElement("a");
         a.textContent = question.answers[i];
         a.setAttribute("class", "button");
         a.setAttribute("data-buttonFunction","answerQuestion");
@@ -88,10 +88,10 @@ function createHomeCard(){
     card.appendChild(h1);
 
     var p = document.createElement("p");
-    p.textContent="Must complete the quiz within the time-limit to place a score. Your score will be the time remaining."
+    p.textContent="Must complete the quiz within the time-limit to place a score. Your score will be the time remaining. Incorrect answers will reduce your remaining time left."
     card.appendChild(p);
 
-    var a = document.createElement("h3");
+    var a = document.createElement("a");
     a.setAttribute("class", "button")
     a.setAttribute("data-buttonFunction", "startTest");
     a.textContent = "Start Test";
@@ -162,6 +162,7 @@ function createHighScoresCard(){
 }
 
 
+
 /* This makes the little gray answer-result boxes appear */
 function populateAnswerResults(){
     elements.answerResultsOl.setAttribute("style", "visibility: visible");
@@ -200,7 +201,7 @@ function answerQuestion(result){
     }
 
     // if our current index is at the end, then we have reached the end of the test, otherwise show next question
-    if (currentQuestionIndex == questions.length || timeLeft <=0){
+    if (currentQuestionIndex == questions.length - 1 || timeLeft <=0){
         changeCard(createEndCard());
         endTimer();
     }else{
@@ -284,7 +285,7 @@ function populateScores(ul){
 
 /** Resets and starts the timer and makes it visible */
 function startTimer(){
-    elements.timerh1.setAttribute("style", "visisbility: visible;")
+    elements.timerh1.setAttribute("style", "visibility: visible;")
     timeLeft = testTime;
     elements.timerh1.innerText = `${timeLeft}`;
     timer = setInterval(onTimerTick, 1000);
