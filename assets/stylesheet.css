@@ -132,6 +132,7 @@ main {
     font-weight: bold;
     color: var(--buttonTextColor);
     background-color: var(--buttonBgColor);
+    cursor:pointer;
 }
 
 .button:hover{

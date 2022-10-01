@@ -4,7 +4,6 @@ var elements = {
     timerh1: document.querySelector("#timer"),
     viewScoresh1: document.querySelector("#highscores"),
     answerResultsOl: document.querySelector("#answerResults"),
-    timerh1: document.querySelector("#timer"),
     costh3: document.querySelector("#cost")
 }
 
@@ -15,9 +14,13 @@ var timeLeft;
 var testTime = 60;
 var cost = 10;
 
-/* Creates and adds a question object to the questions array. */
+/**
+ * Creates and adds a question object to the questions object.
+ * @param {string} ask The question to be asked.
+ * @param {int} correctIndex The zero based index of the correct answer
+ * @param {...string} arguments Any adittional arguments will be treated as potential answers.
+ */
 function addQuestion(ask, correctIndex){
-
     // create the question object
     var question = {
         // function that returns whether an answer was correct or not for this question
@@ -38,9 +41,11 @@ function addQuestion(ask, correctIndex){
     questions.push(question);
 }
 
-/* Creates an html section that represents a question and its options. */
+/** 
+ * Creates an html section that represents a question and its options.
+ * @param {question} question The question object to be injected into the card.
+ */
 function createQuestionCard(question){
-
     // create the section with a card class
     var card = document.createElement("section");
     card.setAttribute("class","card questionCard");
@@ -57,14 +62,11 @@ function createQuestionCard(question){
 
     // create and add the possible answers to the list
     for(let i = 0; i < question.answers.length; i++){
-        var a = document.createElement("a");
+        var a = document.createElement("h3");
         a.textContent = question.answers[i];
-        a.setAttribute("class", "answerOption button");
-        a.setAttribute("href", "#");
-        a.addEventListener("click", function(event){
-            event.preventDefault();
-            answerQuestion(question.getResult(i));}
-            );
+        a.setAttribute("class", "button");
+        a.setAttribute("data-buttonFunction","answerQuestion");
+        a.setAttribute("data-answerIndex", i);
         answersSection.appendChild(a);
     }
     
@@ -73,7 +75,9 @@ function createQuestionCard(question){
 }
 
 
-// Creates an html section to start the test at.
+/** 
+ *  Creates an html section that will act as the home screen 
+ */
 function createHomeCard(){
     var card = document.createElement("section");
     card.setAttribute("class", "card");
@@ -87,22 +91,20 @@ function createHomeCard(){
     p.textContent="Must complete the quiz within the time-limit to place a score. Your score will be the time remaining."
     card.appendChild(p);
 
-    var a = document.createElement("a");
+    var a = document.createElement("h3");
     a.setAttribute("class", "button")
-    a.setAttribute("href", "#");
+    a.setAttribute("data-buttonFunction", "startTest");
     a.textContent = "Start Test";
-    a.addEventListener("click", function(event){
-        event.preventDefault();
-        startTest();
-    });
 
     card.appendChild(a);
 
     return card;
 }
 
-/* Creates an html section to display on quiz completion that allows
-    user to submit their initials for score records */
+/**
+ * Creates an html section to display on quiz completion that allows
+ * user to submit their initials for score records 
+ */
 function createEndCard(){
     var card = document.createElement("section");
     card.setAttribute("class", "card");
@@ -126,23 +128,17 @@ function createEndCard(){
     card.appendChild(input);
 
     var a = document.createElement("a");
-    a.setAttribute("href", "#");
+    a.setAttribute("data-buttonFunction", "submitName");
     a.setAttribute("class", "button");
     a.textContent = "Submit";
-    a.addEventListener("click", function(event){
-        event.preventDefault();
-        changeCard(createHomeCard());
-        elements.answerResultsOl.innerHTML="";
-        endTimer(true);
-        elements.answerResultsOl.setAttribute("style", "visibility: hidden");
-        saveScore(input.value ? input.value : "???", timeLeft);
-    });
     card.appendChild(a);
 
     return card;
 }
 
-/* Creates an html section for displaying the high scores */
+/**
+ * Creates an html section for displaying the high scores 
+ */
 function createHighScoresCard(){
     var card = document.createElement("section");
     card.setAttribute("class", "card");
@@ -152,19 +148,14 @@ function createHighScoresCard(){
     h1.textContent = "High Scores";
     card.appendChild(h1);
 
-    var ol = document.createElement("ul");
-    populateScores(ol);
-    card.appendChild(ol);
+    var ul = document.createElement("ul");
+    populateScores(ul);
+    card.appendChild(ul);
 
     var a = document.createElement("a");
     a.setAttribute("class", "button");
-    a.setAttribute("href", "#");
+    a.setAttribute("data-buttonFunction", "goBack");
     a.innerText = "Go Back";
-    a.addEventListener("click", function(event){
-        event.preventDefault();
-        changeCard(createHomeCard());
-        elements.viewScoresh1.setAttribute("style", "visibility:visible");
-    });
     card.appendChild(a);
 
     return card;
@@ -173,6 +164,8 @@ function createHighScoresCard(){
 
 /* This makes the little gray answer-result boxes appear */
 function populateAnswerResults(){
+    elements.answerResultsOl.setAttribute("style", "visibility: visible");
+    elements.answerResultsOl.innerHTML = "";
     for (var i = 0; i < questions.length; i++)
     {
         var li = document.createElement("li");
@@ -182,23 +175,22 @@ function populateAnswerResults(){
 
 /* Processes the action of clicking an answer */
 function answerQuestion(result){
-
     // change the color of the box in the answer tracker
     var li = document.querySelector("#answerResults").children[currentQuestionIndex];
     var color = result ? "rgb(138, 202, 181)" : "rgb(202, 159, 138)";
     li.setAttribute("style", `background-color:${color};`)
     
-
-    currentQuestionIndex++; // track our questions count
-    outlineActiveQuestion();
-
+    // if it was answered incorrectly then our time is penalized
     if (!result){
         timeLeft -= cost;
-        flashCost();
-        if (timeLeft <= 0){
+        flashCost(); // display the time reduction to the user
+        
+        if (timeLeft <= 0){ // negative scores are no fun
             timeLeft = 0;
         }
         elements.timerh1.textContent = timeLeft;
+
+        // if we ran out of time then the quiz ends
         if (timeLeft <= 0){
             timeLeft = 0;
             changeCard(createEndCard());
@@ -207,10 +199,8 @@ function answerQuestion(result){
         }
     }
 
-
-    // if our current index is more than the amount of question
-    // then we have reached the end of the test, otherwise show next question
-    if (currentQuestionIndex >= questions.length || timeLeft <=0){
+    // if our current index is at the end, then we have reached the end of the test, otherwise show next question
+    if (currentQuestionIndex == questions.length || timeLeft <=0){
         changeCard(createEndCard());
         endTimer();
     }else{
@@ -218,8 +208,18 @@ function answerQuestion(result){
     }
 }
 
-/* Iterates through the answer-result boxes to apply a unique id
-    to the box associated with the current question. */
+/* Creates and shows the next question card */
+function showNextQuestion(){
+    currentQuestionIndex++; // advance the question index
+    outlineActiveQuestion(); // outline it in our tracker
+    card = createQuestionCard(questions[currentQuestionIndex]); // create a new card based on the current question index
+    changeCard(card);
+}
+
+/**
+ * Iterates through the answer-result boxes to apply a unique id
+ * to the box associated with the current question. 
+ */
 function outlineActiveQuestion(){
     var lis = elements.answerResultsOl.children;
     for (var i = 0; i < questions.length;  i++){
@@ -231,13 +231,11 @@ function outlineActiveQuestion(){
     }
 }
 
-/* Creates and shows the next question card */
-function showNextQuestion(){
-    card = createQuestionCard(questions[currentQuestionIndex]); // create a new card based on the current question index
-    changeCard(card);
-}
 
-/* Changes the the current card */
+/**
+* Swaps out the current card element.
+* @param {Element} card element to inject into the card display element.
+*/
 function changeCard(card){
     // clear the card display
     cardDisplay.innerHTML = "";
@@ -245,22 +243,24 @@ function changeCard(card){
     cardDisplay.appendChild(card);
 }
 
-/* Starts the test */
+/**
+ * Starts the test: shuffles the questions, resets current question index,
+ * populates the answer-result boxes, and shows the first question card.
+ */
 function startTest(){
-    shuffleArray(questions);
-    currentQuestionIndex = 0; // ensure we are on the first question
+    shuffleArray(questions); 
     populateAnswerResults(); // show the gray answerboxes to track results
     outlineActiveQuestion();
+    currentQuestionIndex = -1; // set the index to -1 so we can just reuse 'showNexQuestion()'
     showNextQuestion(); // kickoff the first question
     startTimer();
-
-    // adjust visibilities
-    elements.timerh1.setAttribute("style", "visibility:visible;");
-    elements.answerResultsOl.setAttribute("style", "visibility: visible");
 }
 
-/* Populates the scoreboard */
-function populateScores(ol){
+/**
+ * Populates a the score list element with scores from local storage.
+ * @param {Element} ul The list element to add the scores to as <li> elements.
+ */
+function populateScores(ul){
     var scores = JSON.parse(localStorage.getItem("scores"));
     if (scores == null){
         return;
@@ -278,11 +278,11 @@ function populateScores(ol){
         }
         var li = document.createElement("li");
         li.textContent = `${scores[i].score} - ${scores[i].name}`;
-        ol.appendChild(li);
+        ul.appendChild(li);
     }
 }
 
-/* Starts the timer and makes it visible */
+/** Resets and starts the timer and makes it visible */
 function startTimer(){
     elements.timerh1.setAttribute("style", "visisbility: visible;")
     timeLeft = testTime;
@@ -290,7 +290,7 @@ function startTimer(){
     timer = setInterval(onTimerTick, 1000);
 }
 
-/* timer tick function */
+/* Subtracts time and handles running out of time. */
 function onTimerTick(){
     timeLeft--;
     
@@ -302,15 +302,16 @@ function onTimerTick(){
     elements.timerh1.innerText = `${timeLeft}`;
 }
 
-/* ends the timer with the option to hide it */
-function endTimer(hide){
-    if (hide){
-        elements.timerh1.setAttribute("style", "visibility: hidden;");
-    }
+/** Ends the timers and  */
+function endTimer(){
+    elements.timerh1.setAttribute("style", "visibility: hidden;");
     clearInterval(timer);
 }
 
-/* Randomize array in-place using Durstenfeld shuffle algorithm */
+/**
+ *  Randomize array in-place using Durstenfeld shuffle algorithm 
+ * @param {Array} array The array to be shuffled.
+ * */
 function shuffleArray(array) {
     for (var i = array.length - 1; i > 0; i--) {
         var j = Math.floor(Math.random() * (i + 1));
@@ -320,6 +321,7 @@ function shuffleArray(array) {
     }
 }
 
+/** Flashes the time penalty element to the user */
 function flashCost(){
     elements.costh3.setAttribute("style", "visibility: visible");
     setTimeout(() => {
@@ -327,6 +329,7 @@ function flashCost(){
     }, 750);
 }
 
+/** Saves the current score to local storage */
 function saveScore(name, score){
     var scores = JSON.parse(localStorage.getItem("scores"));
     if (scores == null){
@@ -338,6 +341,44 @@ function saveScore(name, score){
     });
     
     localStorage.setItem("scores", JSON.stringify(scores));
+}
+
+/** Catch-all for button clicks */
+function onClick(event){
+    if (!event.target.getAttribute("class", "button")){
+        return;
+    }
+    event.preventDefault();
+
+    var bFunc = event.target.getAttribute("data-buttonFunction");
+    switch (bFunc){
+        case "startTest":
+            startTest();
+            break;
+        case "submitName":
+            var input = document.querySelector("#initials");
+            changeCard(createHomeCard());
+            endTimer(true);
+            elements.answerResultsOl.setAttribute("style", "visibility: hidden");
+            saveScore(input.value ? input.value : "???", timeLeft);
+            break;
+        case "answerQuestion":
+            var index = event.target.getAttribute("data-answerIndex");
+            answerQuestion(questions[currentQuestionIndex].getResult(index));
+            break;
+        case "showhighscores":
+            changeCard(createHighScoresCard());
+            elements.answerResultsOl.innerHTML="";
+            elements.viewScoresh1.setAttribute("style", "visibility: hidden");
+            elements.answerResultsOl.setAttribute("style", "visibility: hidden");
+            endTimer(true);
+            break;
+        case "goBack":
+            changeCard(createHomeCard());
+            elements.viewScoresh1.setAttribute("style", "visibility:visible");
+            break;
+    }
+
 }
 
 // ---------------------------------- //
@@ -419,12 +460,5 @@ addQuestion("Which JavaScript operator is used to determine the type of a variab
 // Start off with a home-card
 changeCard(createHomeCard());
 
-// Give functionality to clicking on 'view highscores'.
-elements.viewScoresh1.addEventListener("click", function(event) {
-    event.preventDefault();
-    changeCard(createHighScoresCard());
-    elements.answerResultsOl.innerHTML="";
-    elements.viewScoresh1.setAttribute("style", "visibility: hidden");
-    elements.answerResultsOl.setAttribute("style", "visibility: hidden");
-    endTimer(true);
-});
+// register the click handler
+document.addEventListener("click", onClick);
