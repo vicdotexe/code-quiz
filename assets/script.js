@@ -19,7 +19,6 @@ var cost = 10;
  */
 class Question {
     /**
-     * 
      * @param {string} ask Question to be asked
      * @param {number} correctIndex The correct index of the answers
      * @param {string[]} answers An array of potential answers
@@ -28,7 +27,6 @@ class Question {
         this.ask = ask;
         this.correctIndex = correctIndex;
         this.answers = answers;
-        answers
     }
 
     /**
@@ -56,10 +54,36 @@ class Question {
 }
 
 /**
- * Makes it easier to create a question and push it to the collection in one go.
+ * A class to represent the most basic "card" html element for this project.
+ */
+class Card {
+    /**
+     * 
+     * @param {string} id Optional unique id for this card element
+     * @param {string} title h1 text content of this card
+     */
+    constructor(id, title){
+        this.element = document.createElement("section");
+        if (id){
+            this.element.id = id;
+        }
+        this.element.classList.add("card");
+        this.h1 = document.createElement("h1");
+        if (title){
+            this.h1.textContent=title;
+        }
+        this.element.appendChild(this.h1);
+        this.content = document.createElement("section");
+        this.content.classList.add("cardContent");
+        this.element.appendChild(this.content);
+    }
+}
+
+/**
+ * Shortcut to create a question and push it to the collection in one go.
  * @param {string} ask The question to be asked.
  * @param {int} correctIndex The zero based index of the correct answer
- * @param {...string} arguments Any additional arguments will be treated as potential answers.
+ * @param {Array} arguments An array of answers
  */
 function addQuestion(ask, correctIndex, answers){
     
@@ -71,27 +95,18 @@ function addQuestion(ask, correctIndex, answers){
  * @param {question} question The question object to be injected into the card.
  */
 function createQuestionCard(question){
-    // create the section with a card class
-    var card = document.createElement("section");
-    card.setAttribute("class","card questionCard");
-    
-    // create an h1 to display the actual question being asked
-    var h1 = document.createElement("h1");
-    h1.textContent = question.ask;
-    card.appendChild(h1);
 
-    // create a section for answers
-    var answersSection = document.createElement("section");
-    answersSection.setAttribute("id", "answersSection");
-    card.appendChild(answersSection);
+    var card = new Card("questionCard", question.ask);
+    
+    card.content.id = "answersSection"
 
     // create and add the possible answers to the list
     for(let i = 0; i < question.answers.length; i++){
-        var a = document.createElement("button");
-        a.textContent = question.answers[i];
-        a.setAttribute("data-buttonFunction","answerQuestion");
-        a.setAttribute("data-answerIndex", i);
-        answersSection.appendChild(a);
+        var button = document.createElement("button");
+        button.textContent = question.answers[i];
+        button.setAttribute("data-buttonFunction","answerQuestion");
+        button.setAttribute("data-answerIndex", i);
+        card.content.appendChild(button);
     }
     
     // return the html section element created
@@ -103,23 +118,18 @@ function createQuestionCard(question){
  *  Creates an html section that will act as the home screen 
  */
 function createHomeCard(){
-    var card = document.createElement("section");
-    card.setAttribute("class", "card");
-    card.setAttribute("id", "homeCard");
 
-    var h1 = document.createElement("h1");
-    h1.textContent = "Coding Quiz Challenge";
-    card.appendChild(h1);
+    var card = new Card("homeCard","Coding Quiz Challenge");
 
     var p = document.createElement("p");
     p.textContent="Must complete the quiz within the time-limit to place a score. Your score will be the time remaining. Incorrect answers will reduce your remaining time left."
-    card.appendChild(p);
+    card.content.appendChild(p);
 
-    var a = document.createElement("button");
-    a.setAttribute("data-buttonFunction", "startTest");
-    a.textContent = "Start Test";
+    var button = document.createElement("button");
+    button.setAttribute("data-buttonFunction", "startTest");
+    button.textContent = "Start Test";
 
-    card.appendChild(a);
+    card.element.appendChild(button);
 
     return card;
 }
@@ -129,32 +139,28 @@ function createHomeCard(){
  * user to submit their initials for score records 
  */
 function createEndCard(){
-    var card = document.createElement("section");
-    card.setAttribute("class", "card");
-    card.setAttribute("id", "endCard");
-
-    var h1 = document.createElement("h1");
-    h1.textContent = "Quiz Complete!";
-    card.appendChild(h1);
+    var card = new Card("endCard", "Quiz Complete!");
+    card.element.setAttribute("id", "endCard");
 
     var h2 = document.createElement("h2");
     h2.textContent = `Score: ${timeLeft}`;
-    card.appendChild(h2);
+    card.element.appendChild(h2);
 
     var p = document.createElement("p");
     p.textContent = "Enter your initials to save your score.";
-    card.appendChild(p);
+    card.element.appendChild(p);
 
     var input = document.createElement("input");
     input.setAttribute("id", "initials");
     input.setAttribute("type", "text");
-    card.appendChild(input);
+    card.element.appendChild(input);
 
-    var a = document.createElement("button");
-    a.setAttribute("data-buttonFunction", "submitName");
-    a.textContent = "Submit";
-    card.appendChild(a);
+    var button = document.createElement("button");
+    button.setAttribute("data-buttonFunction", "submitName");
+    button.textContent = "Submit";
+    card.element.appendChild(button);
 
+    card.content.setAttribute("style", "display: none;");
     return card;
 }
 
@@ -162,27 +168,20 @@ function createEndCard(){
  * Creates an html section for displaying the high scores 
  */
 function createHighScoresCard(){
-    var card = document.createElement("section");
-    card.setAttribute("class", "card");
-    card.setAttribute("id", "highscoresCard");
-
-    var h1 = document.createElement("h1");
-    h1.textContent = "High Scores";
-    card.appendChild(h1);
+    var card = new Card("highscoreCard", "High Scores");
+    card.element.setAttribute("id", "highscoreCard");
 
     var ul = document.createElement("ul");
     populateScores(ul);
-    card.appendChild(ul);
+    card.content.appendChild(ul);
 
-    var a = document.createElement("button");
-    a.setAttribute("data-buttonFunction", "goBack");
-    a.innerText = "Go Back";
-    card.appendChild(a);
+    var button = document.createElement("button");
+    button.setAttribute("data-buttonFunction", "goBack");
+    button.innerText = "Go Back";
+    card.element.appendChild(button);
 
     return card;
 }
-
-
 
 /* This makes the little gray answer-result boxes appear */
 function populateAnswerResults(){
@@ -237,7 +236,7 @@ function showNextQuestion(){
     var nextQuestion = questions[currentQuestionIndex];
     //shuffleAnswers(nextQuestion);
     nextQuestion.shuffleAnswers();
-    card = createQuestionCard(nextQuestion); // create a new card based on the current question index
+    var card = createQuestionCard(nextQuestion); // create a new card based on the current question index
     changeCard(card);
 }
 
@@ -256,7 +255,6 @@ function outlineActiveQuestion(){
     }
 }
 
-
 /**
 * Swaps out the current card element.
 * @param {Element} card element to inject into the card display element.
@@ -265,7 +263,7 @@ function changeCard(card){
     // clear the card display
     cardDisplay.innerHTML = "";
     // add the new card
-    cardDisplay.appendChild(card);
+    cardDisplay.appendChild(card.element);
 }
 
 /**
@@ -395,7 +393,7 @@ function onClick(event){
             var index = event.target.getAttribute("data-answerIndex");
             answerQuestion(questions[currentQuestionIndex].getResult(index));
             break;
-        case "showhighscores":
+        case "showHighscores":
             changeCard(createHighScoresCard());
             elements.answerResultsOl.innerHTML="";
             elements.viewScoresh1.setAttribute("style", "visibility: hidden");
@@ -415,75 +413,25 @@ function onClick(event){
  */
  function populateQuestions(){
     // Populate the questions.
-    addQuestion("Which JavaScript method is used to get a number as a string?", 
-    2, 
-    ["intToString()",
-    "parseInteger()",
-    "toString()",
-    "All of the above"]);
+    addQuestion("Which JavaScript method is used to get a number as a string?", 2, ["intToString()", "parseInteger()", "toString()", "All of the above"]);
 
-    addQuestion("Which is the correct syntax to call an external JavaScript file in the current HTML document?", 
-    0, 
-    [`<script src="jsfile.js"></script>`,
-    `<script href=" jsfile.js"></script>`,
-    `<import src=" jsfile.js"></import>`,
-    `<script link=" jsfile.js"></script>`]);
+    addQuestion("Which is the correct syntax to call an external JavaScript file in the current HTML document?", 0, [`<script src="jsfile.js"></script>`, `<script href=" jsfile.js"></script>`, `<import src=" jsfile.js"></import>`, `<script link=" jsfile.js"></script>`]);
 
-    addQuestion("JavaScript is the programming language of the _____.", 
-    2, 
-    ["Desktop",
-    "Mobile",
-    "Web",
-    "Server"]);
+    addQuestion("JavaScript is the programming language of the _____.", 2, ["Desktop", "Mobile", "Web", "Server"]);
 
-    addQuestion("Which symbol is used separate JavaScript statements?", 
-    3, 
-    ["Comma (,)",
-    "Colon (:)",
-    "Hyphen (_)",
-    "Semicolon (;)"]);
+    addQuestion("Which symbol is used separate JavaScript statements?", 3, ["Comma (,)", "Colon (:)", "Hyphen (_)", "Semicolon (;)"]);
 
-    addQuestion("Which JavaScript method is used to write on browser's console?", 
-    3, 
-    ["]console.write()",
-    "console.output()",
-    "console.writeHTML()",
-    "console.log()"]);
+    addQuestion("Which JavaScript method is used to write on browser's console?", 3, ["console.write()", "console.output()", "console.writeHTML()", "console.log()"]);
 
-    addQuestion("In JavaScript, single line comment begins with ___.", 
-    3, 
-    ["#",
-    "/*",
-    "$",
-    "//"]);
+    addQuestion("In JavaScript, single line comment begins with ___.", 3, ["#", "/*", "$", "//"]);
 
-    addQuestion("In JavaScript, multi-line comments start with __ and end with ___.", 
-    0, 
-    ["/* and */",
-    "<!—and -->",
-    "## and ##",
-    "// and //"]);
+    addQuestion("In JavaScript, multi-line comments start with __ and end with ___.", 0, ["/* and */", "<!—and -->", "## and ##", "// and //"]);
 
-    addQuestion("What is the default value of an uninitialized variable?", 
-    0, 
-    ["undefined",
-    "0",
-    "null",
-    "NaN"]);
+    addQuestion("What is the default value of an uninitialized variable?", 0, ["undefined", "0", "null", "NaN"]);
 
-    addQuestion("JavaScript arrays are written with _____.", 
-    0, 
-    ["square brackets []",
-    `double quotes ""`,
-    "curly brackets {}",
-    "round brackets ()"]);
+    addQuestion("JavaScript arrays are written with _____.", 0, ["square brackets []", `double quotes ""`, "curly brackets {}", "round brackets ()"]);
 
-    addQuestion("Which JavaScript operator is used to determine the type of a variable?", 
-    0, 
-    ["typeof",
-    "TypeOf",
-    "typeOf",
-    "sizeof"]);
+    addQuestion("Which JavaScript operator is used to determine the type of a variable?", 0, ["typeof", "TypeOf", "typeOf", "sizeof"]);
 }
 
 // ------------------------------------------ //
