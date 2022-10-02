@@ -1,29 +1,33 @@
 :root{
-    --primaryColor: rgb(123, 163, 132);
-    --primaryOffsetColor: rgb(87, 159, 104);
-
-    --secondaryColor: rgb(150, 185, 192);
-    --secondaryLight: rgb(178, 205, 210);
+    --primaryColor: rgb(114, 183, 211);
+    --primaryOffsetColor: rgb(112, 189, 228);
+    
+    --secondaryColor: rgb(153, 196, 209);
+    --secondaryLight: rgb(178, 218, 224);
     --buttonBgColor: var(--primaryColor);
     --buttonHighlightColor: var(--primaryOffsetColor);
     --buttonTextColor: white;
 
-    --bgColor: rgb(215, 207, 180);
+    --bgColor: rgb(206, 206, 182);
     --headerBgColor: var(--secondaryColor);
     --cardBgColor: var(--secondaryColor);
 
     --boxshadowColor: rgb(11, 11, 11,0.4);
 
-    --timerColor: rgb(126, 167, 175);
+    --timerColor: var(--primaryColor);
     --initialsBgColor: var(--secondaryLight);
+    margin: 0;
 }
 *{
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     color:rgb(66, 80, 69);
+    margin:5px;
 }
+
 
 body {
     background-color: var(--bgColor);
+    margin: 0;
 }
 
 header{
@@ -32,9 +36,10 @@ header{
     align-items: center;
     padding: 10px;
     background-color: var(--headerBgColor);
-    box-shadow: 0px 4px 7px var(--boxshadowColor), inset 0px 10px 10px var(--secondaryLight);
+    box-shadow: 0px 3px 5px var(--boxshadowColor), inset 0px 10px 10px var(--secondaryLight);
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
+    margin: 0;
 }
 
 main {
@@ -46,6 +51,7 @@ main {
 
 button {
     border-style: none;
+    border: 1px solid var(--secondaryLight);
     border-radius: 10px;
     margin: 5px 0px;
     padding: 10px;
@@ -71,9 +77,8 @@ button:hover{
 }
 
 #cardDisplay{
-    width: 500px;
-    height: 300px;
-    margin-top: 25px;
+    max-width: 500px;
+    margin: 25px;
 }
 
 .card{
@@ -81,12 +86,12 @@ button:hover{
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    border-radius: 20px;
+    border-radius: 15px;
     width: 100%;
     height: 100%;
     padding: 10px 20px;
     background-color: var(--cardBgColor);
-    box-shadow: 0px 5px 7px var(--boxshadowColor), inset 0px 5px 15px var(--secondaryLight);
+    box-shadow: 0px 3px 7px var(--boxshadowColor), inset 0px 5px 15px var(--secondaryLight);
 }
 
 .card h1{
@@ -102,7 +107,7 @@ button:hover{
     background-color: var(--secondaryLight);
     width: 100%;
     border-radius: 10px;
-    box-shadow: inset 0px 2px 5px var(--boxshadowColor);
+    box-shadow: inset 0px 1px 5px var(--boxshadowColor);
 }
 .questionCard h1{
     font-size: 20px;
@@ -121,9 +126,9 @@ button:hover{
 }
 
 
+
 #highscoreCard ul li {
     font-size: 24px;
-    margin: 5px;
 }
 
 #score {
@@ -159,20 +164,21 @@ button:hover{
 #answerResults{
     margin: 20px;
     display: flex;
-    justify-content: space-around;
+    justify-content: flex-start;
+    flex-wrap: wrap;
     border-radius: 10px;
     background-color: var(--secondaryColor);
-    box-shadow: 0px 4px 5px var(--boxshadowColor), inset 0px 5px 15px var(--secondaryLight);
+    box-shadow: 0px 3px 5px var(--boxshadowColor), inset 0px 5px 15px var(--secondaryLight);
     padding: 5px;
     visibility: hidden;
 }
 
 #answerResults li{
-    padding: 20px;
+    padding: 15px;
     margin: 5px;
     border-radius: 10px;
     background-color: rgba(210, 210, 210, 0.7);
-    box-shadow: inset 0px 2px 5px var(--boxshadowColor);
+    box-shadow: inset 0px 1px 5px var(--boxshadowColor);
 }
 
 #current {
