@@ -162,7 +162,6 @@ button:hover{
 }
 
 #answerResults{
-    margin: 20px;
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
@@ -172,6 +171,7 @@ button:hover{
     padding: 5px;
     visibility: hidden;
 }
+
 
 #answerResults li{
     padding: 15px;
